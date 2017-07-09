@@ -8,14 +8,20 @@ import (
 	"io/ioutil"
 	"os"
 	"text/template"
+
+	"gopkg.in/yaml.v2"
 )
 
 func main() {
 	var (
+		format       string
 		inputPath    string
 		outputPath   string
 		templatePath string
 	)
+
+	flag.StringVar(&format, "format", "json", "data format 'json' or 'yaml' (default json)")
+	flag.StringVar(&format, "f", "json", "data format 'json' or 'yaml' (default json)")
 
 	flag.StringVar(&inputPath, "in", "", "input file (default STDIN)")
 	flag.StringVar(&inputPath, "i", "", "input file (default STDIN)")
@@ -73,7 +79,15 @@ func main() {
 	}
 
 	m := make(map[string]interface{})
-	err = json.Unmarshal(b, &m)
+	switch format {
+	case "json":
+		err = json.Unmarshal(b, &m)
+	case "yaml":
+		err = yaml.Unmarshal(b, &m)
+	default:
+		fmt.Fprintln(os.Stderr, "unknown data format")
+		return
+	}
 	if err != nil {
 		fmt.Fprintln(os.Stderr, "input file error:", err)
 		return
