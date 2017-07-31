@@ -34,15 +34,22 @@ func main() {
 
 	flag.Parse()
 
-	if templatePath == "" {
-		fmt.Fprintln(os.Stderr, "template file path is required.")
-		flag.Usage()
-		return
+	var tmpl *template.Template
+	var err error
+
+	switch templatePath {
+	case "":
+		if len(flag.Args()) == 0 {
+			err = fmt.Errorf("pattern is required")
+			break
+		}
+		tmpl, err = template.New("main").Parse(flag.Arg(0))
+	default:
+		tmpl, err = template.ParseFiles(templatePath)
 	}
 
-	tmpl, err := template.ParseFiles(templatePath)
 	if err != nil {
-		fmt.Fprintln(os.Stderr, "tempate file error:", err)
+		fmt.Fprintln(os.Stderr, "tempate error:", err)
 		return
 	}
 
