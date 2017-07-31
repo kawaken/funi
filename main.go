@@ -85,12 +85,12 @@ func main() {
 		return
 	}
 
-	m := make(map[string]interface{})
+	var data interface{}
 	switch format {
 	case "json":
-		err = json.Unmarshal(b, &m)
+		err = json.Unmarshal(b, &data)
 	case "yaml":
-		err = yaml.Unmarshal(b, &m)
+		err = yaml.Unmarshal(b, &data)
 	default:
 		fmt.Fprintln(os.Stderr, "unknown data format")
 		return
@@ -100,7 +100,7 @@ func main() {
 		return
 	}
 
-	err = tmpl.Execute(outFile, m)
+	err = tmpl.Execute(outFile, data)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, "output file error:", err)
 	}
