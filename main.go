@@ -20,16 +20,9 @@ func main() {
 		templatePath string
 	)
 
-	flag.StringVar(&format, "format", "json", "data format 'json' or 'yaml' (default json)")
-	flag.StringVar(&format, "f", "json", "data format 'json' or 'yaml' (default json)")
-
-	flag.StringVar(&inputPath, "in", "", "input file (default STDIN)")
+	flag.StringVar(&format, "f", "json", "data format 'json' or 'yaml'")
 	flag.StringVar(&inputPath, "i", "", "input file (default STDIN)")
-
-	flag.StringVar(&outputPath, "out", "", "output file (default STDOUT)")
 	flag.StringVar(&outputPath, "o", "", "output file (default STDOUT)")
-
-	flag.StringVar(&templatePath, "template", "", "template file path (required)")
 	flag.StringVar(&templatePath, "t", "", "template file path (required)")
 
 	flag.Parse()
