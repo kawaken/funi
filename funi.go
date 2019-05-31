@@ -16,7 +16,7 @@ type Options struct {
 	Format         string
 	InputPath      string
 	OutputPath     string
-	TemplatePath   string
+	TemplatePath   []string
 	TemplateString string
 }
 
@@ -24,11 +24,11 @@ func loadTemplate(opts Options) (*template.Template, error) {
 	var tmpl *template.Template
 	var err error
 
-	switch opts.TemplatePath {
-	case "":
+	switch len(opts.TemplatePath) {
+	case 0:
 		tmpl, err = template.New("main").Parse(opts.TemplateString)
 	default:
-		tmpl, err = template.ParseFiles(opts.TemplatePath)
+		tmpl, err = template.ParseFiles(opts.TemplatePath...)
 	}
 
 	return tmpl, err

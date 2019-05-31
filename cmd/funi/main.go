@@ -4,22 +4,34 @@ import (
 	"flag"
 	"fmt"
 	"os"
+	"strings"
 
 	"github.com/kawaken/funi"
 )
+
+type paths []string
+
+func (p *paths) String() string {
+	return strings.Join([]string(*p), ", ")
+}
+
+func (p *paths) Set(s string) error {
+	*p = append(*p, s)
+	return nil
+}
 
 func main() {
 	var (
 		format       string
 		inputPath    string
 		outputPath   string
-		templatePath string
+		templatePath paths
 	)
 
 	flag.StringVar(&format, "f", "json", "data format 'json' or 'yaml'")
 	flag.StringVar(&inputPath, "i", "", "input file (default STDIN)")
 	flag.StringVar(&outputPath, "o", "", "output file (default STDOUT)")
-	flag.StringVar(&templatePath, "t", "", "template file path (required)")
+	flag.Var(&templatePath, "t", "template file path (required if no arg), can use multiple")
 
 	flag.Parse()
 	var err error
@@ -31,7 +43,7 @@ func main() {
 		}
 	}()
 
-	if templatePath == "" && len(flag.Args()) == 0 {
+	if len(templatePath) == 0 && len(flag.Args()) == 0 {
 		err = fmt.Errorf("pattern is required")
 		return
 	}
