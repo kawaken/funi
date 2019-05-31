@@ -1,6 +1,7 @@
 package funi
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 	"io"
@@ -21,17 +22,29 @@ type Options struct {
 }
 
 func loadTemplate(opts Options) (*template.Template, error) {
-	var tmpl *template.Template
-	var err error
+	var buf bytes.Buffer
 
 	switch len(opts.TemplatePath) {
 	case 0:
-		tmpl, err = template.New("main").Parse(opts.TemplateString)
+		_, err := buf.WriteString(opts.TemplateString)
+		if err != nil {
+			return nil, err
+		}
 	default:
-		tmpl, err = template.ParseFiles(opts.TemplatePath...)
+		for _, path := range opts.TemplatePath {
+			b, err := ioutil.ReadFile(path)
+			if err != nil {
+				return nil, err
+			}
+
+			_, err = buf.Write(b)
+			if err != nil {
+				return nil, err
+			}
+		}
 	}
 
-	return tmpl, err
+	return template.New("main").Parse(buf.String())
 }
 
 func loadInputFile(path string, r io.ReadCloser) (io.ReadCloser, error) {
