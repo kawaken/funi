@@ -25,7 +25,7 @@ $ echo '{"key":"value"}' | funi -t key.tmpl
 key is value
 ```
 
-## Template
+### Template
 
 Template syntax is from `text/template`.  
 [template \- The Go Programming Language](https://golang.org/pkg/text/template/)
