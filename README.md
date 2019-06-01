@@ -45,13 +45,13 @@ key: value
 $ funi -h
 Usage of funi:
   -f string
-    	data format 'json' or 'yaml' (default "json")
+      data format 'json' or 'yaml' (default "json")
   -i string
-    	input file (default STDIN)
+      input file (default STDIN)
   -o string
-    	output file (default STDOUT)
+      output file (default STDOUT)
   -t string
-    	template file path (required)
+      template file path (required)
 ```
 
 `-t` is required when command line argument is nothing.
