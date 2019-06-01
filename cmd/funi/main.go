@@ -43,11 +43,6 @@ func main() {
 		}
 	}()
 
-	if len(templatePath) == 0 && len(flag.Args()) == 0 {
-		err = fmt.Errorf("pattern is required")
-		return
-	}
-
 	opts := funi.Options{
 		Format:         format,
 		InputPath:      inputPath,
