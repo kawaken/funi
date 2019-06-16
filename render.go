@@ -36,6 +36,11 @@ func (ren *Renderer) ExecuteYAML(in io.Reader, out io.Writer) error {
 	return ren.execute(in, out, yaml.Unmarshal)
 }
 
+// ExecuteObject applies a template to object.
+func (ren *Renderer) ExecuteObject(obj interface{}, out io.Writer) error {
+	return ren.t.Execute(out, obj)
+}
+
 func (ren *Renderer) execute(in io.Reader, out io.Writer, uf func([]byte, interface{}) error) error {
 	body, err := ioutil.ReadAll(in)
 	if err != nil {
